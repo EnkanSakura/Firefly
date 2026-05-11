@@ -33,11 +33,11 @@ export const siteConfig: SiteConfig = {
 	// 主题色
 	themeColor: {
 		// 主题色的默认色相，范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345
-		hue: 165,
+		hue: 345,
 		// 是否对访问者隐藏主题色选择器
-		fixed: false,
+		fixed: true,
 		// 默认模式："light" 亮色，"dark" 暗色，"system" 跟随系统
-		defaultMode: "system",
+		defaultMode: "dark",
 	},
 
 	// 页面整体宽度（单位：rem）
@@ -50,14 +50,14 @@ export const siteConfig: SiteConfig = {
 		// 是否开启卡片边框和阴影，开启后让网站更有立体感
 		border: true,
 		// 是否让卡片风格跟随主题色相
-		followTheme: false,
+		followTheme: true,
 	},
 
 	// Favicon 配置
 	favicon: [
 		{
 			// 图标文件路径
-			src: "/favicon/favicon.ico",
+			src: "/favicon/favicon.svg",
 			// 可选，指定主题 'light' | 'dark'
 			// theme: "light",
 			// 可选，图标大小
@@ -76,22 +76,22 @@ export const siteConfig: SiteConfig = {
 		logo: {
 			type: "image",
 			value: "assets/images/firefly.png",
-			alt: "🍀",
+			alt: "Logo",
 		},
 		// 导航栏标题
-		title: "Firefly",
+		title: "EnkanSakura",
 		// 全宽导航栏，导航栏是否占满屏幕宽度
-		widthFull: false,
+		widthFull: true,
 		// 导航菜单对齐方式，left：左对齐，center：居中
 		menuAlign: "center",
 		// 导航栏图标和标题是否跟随主题色
-		followTheme: false,
+		followTheme: true,
 		// 导航栏是否固定在顶部并始终可见
 		stickyNavbar: true,
 	},
 
 	// 站点开始日期，用于统计运行天数
-	siteStartDate: "2025-01-01",
+	siteStartDate: "2026-05-11",
 
 	// 站点时区（IANA 时区字符串），用于格式化bangumi、rss里的构建日期时间等等..
 	// 示例："Asia/Shanghai", "UTC", 如果为空，则按照构建服务器的时区进行时区转换
@@ -118,7 +118,7 @@ export const siteConfig: SiteConfig = {
 	// bangumi配置
 	bangumi: {
 		// Bangumi用户ID
-		userId: "1143164",
+		userId: "1224437",
 		// 条目类型排序，数组中的类型将按顺序优先展示
 		// 可选值: "anime" | "book" | "music" | "game" | "real" (暂不支持"real"类型)
 		// 未列出的类型将按默认顺序排在后面
@@ -131,7 +131,7 @@ export const siteConfig: SiteConfig = {
 		// 友链页面开关
 		friends: true,
 		// 赞助页面开关
-		sponsor: true,
+		sponsor: false,
 		// 留言板页面开关，需要配置评论系统
 		guestbook: true,
 		// 番组计划页面开关，含追番、游戏、书籍和音乐，dev调试时只获取一页数据，build才会获取全部数据
