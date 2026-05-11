@@ -34,27 +34,37 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		url: "/my/",
 		icon: "material-symbols:person",
 		children: [
-			// 根据配置决定是否添加相册，在siteConfig关闭pages.gallery时导航栏不显示相册
-			...(siteConfig.pages.gallery ? [LinkPreset.Gallery] : []),
-
+			{
+				name: "关于",
+				url: "/about/",
+				icon: "material-symbols:info",
+				external: false
+			},
 			// 根据配置决定是否添加番组计划，在siteConfig关闭pages.bangumi时导航栏不显示番组计划
-			...(siteConfig.pages.bangumi ? [LinkPreset.Bangumi] : []),
+			...(siteConfig.pages.bangumi ? [{
+				name: "Bangumi",
+				url: "/bangumi/",
+				icon: "material-symbols:movie",
+				external: false
+			}] : []),
+			// 根据配置决定是否添加相册，在siteConfig关闭pages.gallery时导航栏不显示相册
+			...(siteConfig.pages.gallery ? [LinkPreset.Gallery] : [])
 		],
 	});
 
 	// 关于及其子菜单
-	links.push({
-		name: "关于",
-		url: "/content/",
-		icon: "material-symbols:info",
-		children: [
-			// 根据配置决定是否添加赞助，在siteConfig关闭pages.sponsor时导航栏不显示赞助
-			...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []),
+	// links.push({
+	// 	name: "关于",
+	// 	url: "/content/",
+	// 	icon: "material-symbols:info",
+	// 	children: [
+	// 		// 根据配置决定是否添加赞助，在siteConfig关闭pages.sponsor时导航栏不显示赞助
+	// 		...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []),
 
-			// 关于页面
-			LinkPreset.About,
-		],
-	});
+	// 		// 关于页面
+	// 		LinkPreset.About,
+	// 	],
+	// });
 
 	// 自定义导航栏链接,并且支持多级菜单
 	links.push({
@@ -65,22 +75,28 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		// 子菜单
 		children: [
 			{
+				name: "bilibili",
+				icon: "fa7-brands:bilibili",
+				url: "https://space.bilibili.com/4275270",
+				external: true,
+			},
+			{
 				name: "GitHub",
-				url: "https://github.com/CuteLeaf/Firefly",
-				external: true,
 				icon: "fa7-brands:github",
+				url: "https://github.com/enkansakura",
+				external: true,
 			},
 			{
-				name: "Gitee",
-				url: "https://gitee.com/CuteLeaf/Firefly",
+				name: "Steam",
+				icon: "fa7-brands:steam",
+				url: "https://steamcommunity.com/id/enkansakura/",
 				external: true,
-				icon: "fa7-brands:gitee",
 			},
 			{
-				name: "QQ交流群",
-				url: "https://qm.qq.com/q/ZGsFa8qX2G",
+				name: "Twitter",
+				icon: "fa7-brands:twitter",
+				url: "https://twitter.com/enkansakura",
 				external: true,
-				icon: "fa7-brands:qq",
 			},
 		],
 	});
