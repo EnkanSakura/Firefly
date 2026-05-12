@@ -18,16 +18,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		LinkPreset.Archive,
 	];
 
-	// 根据配置决定是否添加友链，在siteConfig关闭pages.friends时导航栏不显示友链
-	if (siteConfig.pages.friends) {
-		links.push(LinkPreset.Friends);
-	}
-
-	// 根据配置决定是否添加留言板，在siteConfig关闭pages.guestbook时导航栏不显示留言板
-	if (siteConfig.pages.guestbook) {
-		links.push(LinkPreset.Guestbook);
-	}
-
 	// 我的及其子菜单
 	links.push({
 		name: "我的",
@@ -48,27 +38,16 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				external: false
 			}] : []),
 			// 根据配置决定是否添加相册，在siteConfig关闭pages.gallery时导航栏不显示相册
-			...(siteConfig.pages.gallery ? [LinkPreset.Gallery] : [])
+			...(siteConfig.pages.gallery ? [LinkPreset.Gallery] : []),
+
+			// 根据配置决定是否添加赞助，在siteConfig关闭pages.sponsor时导航栏不显示赞助
+			...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []),
 		],
 	});
 
-	// 关于及其子菜单
-	// links.push({
-	// 	name: "关于",
-	// 	url: "/content/",
-	// 	icon: "material-symbols:info",
-	// 	children: [
-	// 		// 根据配置决定是否添加赞助，在siteConfig关闭pages.sponsor时导航栏不显示赞助
-	// 		...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []),
-
-	// 		// 关于页面
-	// 		LinkPreset.About,
-	// 	],
-	// });
-
 	// 自定义导航栏链接,并且支持多级菜单
 	links.push({
-		name: "链接",
+		name: "外链",
 		url: "/links/",
 		icon: "material-symbols:link",
 
@@ -76,30 +55,46 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		children: [
 			{
 				name: "bilibili",
-				icon: "fa7-brands:bilibili",
 				url: "https://space.bilibili.com/4275270",
 				external: true,
+				icon: "fa7-brands:bilibili",
 			},
 			{
 				name: "GitHub",
-				icon: "fa7-brands:github",
 				url: "https://github.com/enkansakura",
 				external: true,
+				icon: "fa7-brands:github",
 			},
 			{
 				name: "Steam",
-				icon: "fa7-brands:steam",
 				url: "https://steamcommunity.com/id/enkansakura/",
 				external: true,
+				icon: "fa7-brands:steam",
 			},
 			{
 				name: "Twitter",
-				icon: "fa7-brands:twitter",
 				url: "https://twitter.com/enkansakura",
 				external: true,
+				icon: "fa7-brands:twitter",
+			},
+			{
+				name: "Bangumi",
+				url: "https://bgm.tv/user/1224437",
+				external: true,
+				icon: "mdi:television-classic",
 			},
 		],
 	});
+
+	// 根据配置决定是否添加友链，在siteConfig关闭pages.friends时导航栏不显示友链
+	if (siteConfig.pages.friends) {
+		links.push(LinkPreset.Friends);
+	}
+
+	// 根据配置决定是否添加留言板，在siteConfig关闭pages.guestbook时导航栏不显示留言板
+	if (siteConfig.pages.guestbook) {
+		links.push(LinkPreset.Guestbook);
+	}
 
 	// 仅返回链接，其它导航搜索相关配置在模块顶层常量中独立导出
 	return { links } as NavBarConfig;

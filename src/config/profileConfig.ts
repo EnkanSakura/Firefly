@@ -45,5 +45,11 @@ export const profileConfig: ProfileConfig = {
 			url: "https://twitter.com/enkansakura",
 			showName: false,
 		},
+		{
+			name: "Bangumi",
+			icon: "mdi:television-classic",
+			url: "https://bgm.tv/user/1224437",
+			showName: false,
+		},
 	],
 };
