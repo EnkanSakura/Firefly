@@ -28,15 +28,19 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				name: "关于",
 				url: "/about/",
 				icon: "material-symbols:info",
-				external: false
+				external: false,
 			},
 			// 根据配置决定是否添加番组计划，在siteConfig关闭pages.bangumi时导航栏不显示番组计划
-			...(siteConfig.pages.bangumi ? [{
-				name: "Bangumi",
-				url: "/bangumi/",
-				icon: "material-symbols:movie",
-				external: false
-			}] : []),
+			...(siteConfig.pages.bangumi
+				? [
+						{
+							name: "Bangumi",
+							url: "/bangumi/",
+							icon: "material-symbols:movie",
+							external: false,
+						},
+					]
+				: []),
 			// 根据配置决定是否添加相册，在siteConfig关闭pages.gallery时导航栏不显示相册
 			...(siteConfig.pages.gallery ? [LinkPreset.Gallery] : []),
 

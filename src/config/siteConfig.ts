@@ -16,8 +16,7 @@ export const siteConfig: SiteConfig = {
 	site_url: "https://enkansakura.top",
 
 	// 站点描述
-	description:
-		"麻薯の养殖场·ユリのガーデン",
+	description: "麻薯の养殖场·ユリのガーデン",
 
 	// 站点关键词
 	keywords: [
