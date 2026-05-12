@@ -11,6 +11,8 @@ slug: first-publish
 
 ## 麻薯养殖场开业，我已启动
 
+该项目使用Cloudflare Workers部署
+
 ::github{repo="EnkanSakura/Firefly"}
 
 ![](./Defect.gif)
