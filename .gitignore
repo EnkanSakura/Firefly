@@ -30,6 +30,7 @@ yarn.lock
 .idea
 *.iml
 .claude
+.codewhale
 
 # docs
 Firefly-docs/
