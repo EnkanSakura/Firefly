@@ -3,7 +3,7 @@ title: 建站
 published: 2026-05-13
 description: 我已启动
 image: ./kaho.avif
-tags: [blog]
+tags: []
 category: 文章示例
 draft: false
 slug: first-publish

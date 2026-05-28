@@ -1,9 +1,9 @@
 ---
-title: AE笔记——H.I.F.出场确定制作记录
+title: AE笔记——上伊那牡丹H.I.F.出场确定制作记录
 published: 2026-05-28
-updated: 2026-05-28
+description: 记一下复刻H.I.F.出场确定PV用到的部分特效实现方法
+image: ./form.png
 pinned: false
-description: ae
 tags: [Adobe, AE, 笔记, PV]
 category: 技术分享
 draft: false
@@ -21,6 +21,8 @@ slug: ae-note01-hif
 <iframe width="100%" height="468" src="//player.bilibili.com/player.html?bvid=BV1VSG16SEL8&p=1&autoplay=0" scrolling="no" border="0" frameborder="no"
   framespacing="0" allowfullscreen="true"></iframe>
 
+
+
 # 特效
 
 ## 打字效果
@@ -31,13 +33,13 @@ slug: ae-note01-hif
 
 #### 内置预设：Text-Animate In-打字机
 
-![](./打字机.webp)
+![打字机预设](./打字机.webp)
 
 ## 文字缩放入场
 
 ### 示例
 
-![](./Mid5.webp)
+![文字缩放](./Mid5.webp)
 
 ### 实现
 
@@ -45,13 +47,13 @@ slug: ae-note01-hif
 
 默认是放大出场，动画-范围选择器-偏移值的起始帧改为+100、结束帧改为-100就是缩小入场
 
-![](./缩放.webp)
+![缩放预设](./缩放.webp)
 
 ## 文字抖动
 
 ### 示例
 
-还是上面的图
+![抖动](./Mid5.webp)
 
 ### 实现
 
@@ -59,7 +61,7 @@ slug: ae-note01-hif
 
 不是文字也可以用
 
-![](./抖动.webp)
+![抖动预设](./抖动.webp)
 
 ## 曝光/眩光/闪光+画面变色
 
@@ -77,7 +79,7 @@ slug: ae-note01-hif
 
 效果从上到下：镜头光晕、任意模糊、色调
 
-![](./曝光1.webp)
+![图层](./曝光1.webp)
 
 #### 镜头光晕
 
@@ -102,7 +104,7 @@ slug: ae-note01-hif
 色调：将白色映射到、将黑色映射到
 
 
-![](./曝光2.webp)
+![效果控件](./曝光2.webp)
 
 ## RGB色散
 
@@ -126,7 +128,7 @@ slug: ae-note01-hif
 
 不透明度也是看着调，绿色层比红蓝层低就行
 
-![](./色散1.webp)
+![图层](./色散1.webp)
 
 #### 3D眼镜
 
@@ -140,7 +142,7 @@ slug: ae-note01-hif
 
 3D眼镜：场景融合、垂直对齐
 
-![](./色散2.webp)
+![效果控件](./色散2.webp)
 
 ## 光柱
 
@@ -156,13 +158,13 @@ slug: ae-note01-hif
 
 叠一层纯色层加上saber效果
 
-![](光柱1.webp)
+![图层](光柱1.webp)
 
 #### saber插件
 
 作用是产生一束光源，用Core Start（起始点）和Core End（结束点）确定光源长度和位置，核心和发光的大小、发光都可调
 
-![](光柱2.webp)
+![效果控件](光柱2.webp)
 
 Start/End Offset用来调节光源到两端点的间隔，给这个打帧比给Core Start/End打帧方便
 
@@ -177,3 +179,11 @@ saber：End Offset
 Core End：`[effect("Saber")("Core Start")[0],effect("Saber")("Core End")[1]]`
 
 这条用来保持两点连线竖直
+
+# 结语
+
+> [!IMPORTANT] 必须看[上伊那ぼたん、酔へる姿は百合の花](https://bangumi.tv/subject/543360)
+
+![1](end1.gif)
+
+![0](end0.gif)

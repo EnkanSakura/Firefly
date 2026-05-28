@@ -1,9 +1,9 @@
 ---
 title: 文章辅助生成工具
 published: 2026-05-14
-description: 一款专为Firefly设计的 Markdown 文章可视化辅助生成工具。
+description: 一款专为Firefly设计的 Markdown 文章可视化辅助生成工具
 image: ./form.png
-tags: [blog, tool, markdown]
+tags: [tool, markdown]
 category: 工具分享
 draft: false
 slug: content-assistant
