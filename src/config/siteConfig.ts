@@ -13,7 +13,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "妈薯ブロッグ",
 
 	// 站点 URL
-	site_url: "https://enkansakura.top",
+	site_url: "https://blog.enkansakura.top",
 
 	// 站点描述
 	description: "麻薯の养殖场·ユリのガーデン",
