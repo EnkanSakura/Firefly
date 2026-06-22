@@ -1,0 +1,539 @@
+---
+// NMR-RF-Calc 组件
+// 提供 LC 谐振电路计算 和 拉莫尔频率计算
+---
+
+<div id="nmr-rf-calc" class="nmr-calc-wrapper">
+  <!-- LC 谐振电路计算 -->
+  <div class="card-base p-6 mb-6 rounded-(--radius-large)">
+    <div class="flex items-center gap-3 mb-5">
+      <div class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70 shrink-0">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <h2 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">LC 谐振电路计算</h2>
+    </div>
+    <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-5">
+      输入电容 (C)、电感 (L)、谐振频率 (f) 中的任意两项。
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+      <!-- 电容输入 -->
+      <div>
+        <label for="lc-capacitance" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">
+          电容 C (pF)
+        </label>
+        <div class="flex gap-2">
+        <input
+          id="lc-capacitance"
+          type="number"
+          step="any"
+          min="0"
+          placeholder=""
+          class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors"
+        />
+        </div>
+      </div>
+
+      <!-- 电感输入 -->
+      <div>
+        <label for="lc-inductance" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">
+          电感 L (nH)
+        </label>
+        <div class="flex gap-2">
+        <input
+          id="lc-inductance"
+          type="number"
+          step="any"
+          min="0"
+          placeholder=""
+          class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors"
+        />
+        </div>
+      </div>
+
+      <!-- 频率输入 -->
+      <div>
+        <label for="lc-frequency" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">
+          频率 f (MHz)
+        </label>
+        <div class="flex gap-2">
+        <input
+          id="lc-frequency"
+          type="number"
+          step="any"
+          min="0"
+          placeholder=""
+          class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors"
+        />
+        </div>
+      </div>
+    </div>
+
+    <!-- 结果显示 -->
+    <div id="lc-result" class="hidden p-4 rounded-lg bg-(--primary)/8 dark:bg-(--btn-regular-bg) border border-(--primary)/30 dark:border-none">
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div id="lc-result-card-c" class="rounded-lg py-2 transition-colors">
+          <span class="text-xs text-neutral-500 dark:text-neutral-400">电容 C</span>
+          <div id="lc-result-c" class="text-lg font-bold text-(--primary)">—</div>
+        </div>
+        <div id="lc-result-card-l" class="rounded-lg py-2 transition-colors">
+          <span class="text-xs text-neutral-500 dark:text-neutral-400">电感 L</span>
+          <div id="lc-result-l" class="text-lg font-bold text-(--primary)">—</div>
+        </div>
+        <div id="lc-result-card-f" class="rounded-lg py-2 transition-colors">
+          <span class="text-xs text-neutral-500 dark:text-neutral-400">频率 f</span>
+          <div id="lc-result-f" class="text-lg font-bold text-(--primary)">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-2 mt-4">
+      <button id="lc-recalc-btn" type="button" class="btn-plain px-4 py-1.5 rounded-lg text-sm hover:bg-(--btn-plain-bg-hover) transition-colors text-neutral-600 dark:text-neutral-400" title="重算">重算</button>
+      <button id="lc-clear-btn" type="button" class="btn-plain px-4 py-1.5 rounded-lg text-sm hover:bg-(--btn-plain-bg-hover) transition-colors text-neutral-600 dark:text-neutral-400">
+        清除
+      </button>
+    </div>
+  </div>
+
+  <!-- 拉莫尔频率计算 -->
+  <div class="card-base p-6 rounded-(--radius-large)">
+    <div class="flex items-center gap-3 mb-5">
+      <div class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70 shrink-0">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+      </div>
+      <h2 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">拉莫尔频率计算</h2>
+    </div>
+    <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-5">
+      选择核素，输入磁场强度或拉莫尔频率中的任意一项，自动计算另一项。
+    </p>
+
+    <!-- 核素选择 -->
+    <div class="mb-5">
+      <label for="nuclide-select" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">
+        选择核素
+      </label>
+      <select
+        id="nuclide-select"
+        class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors appearance-none"
+        style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23999%22 stroke-width=%222%22><path d=%22m6 9 6 6 6-6%22/></svg>'); background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 1.2rem;"
+      >
+      </select>
+      <!-- 核素信息显示 -->
+      <div id="nuclide-info" class="mt-2 flex flex-wrap gap-2 text-xs">
+        <span id="nuclide-spin" class="px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">自旋: —</span>
+        <span id="nuclide-gamma" class="px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">γ̅: — MHz/T</span>
+        <span id="nuclide-abundance" class="px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">丰度: —%</span>
+      </div>
+    </div>
+
+    <!-- 磁场和频率输入 -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+      <div>
+        <label for="bfield-input" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">
+          磁场强度 B₀ (T)
+        </label>
+        <input
+          id="bfield-input"
+          type="number"
+          step="any"
+          min="0"
+          placeholder=""
+          class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors"
+        />
+        <p class="mt-1 text-xs text-neutral-400 dark:text-neutral-500">常见: 1.5T, 3T, 7T, 9.4T, 11.7T, 14.1T</p>
+      </div>
+      <div>
+        <label for="larmor-freq-input" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">
+          拉莫尔频率 ν₀ (MHz)
+        </label>
+        <input
+          id="larmor-freq-input"
+          type="number"
+          step="any"
+          min="0"
+          placeholder=""
+          class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors"
+        />
+      </div>
+    </div>
+
+    <!-- 结果显示 -->
+    <div id="larmor-result" class="hidden p-4 rounded-lg bg-(--primary)/8 dark:bg-(--btn-regular-bg) border border-(--primary)/30 dark:border-none">
+      <div class="grid grid-cols-2 gap-4 text-center">
+        <div id="larmor-result-card-freq" class="rounded-lg py-2 transition-colors">
+          <span class="text-xs text-neutral-500 dark:text-neutral-400">拉莫尔频率 ν₀</span>
+          <div id="larmor-result-freq" class="text-lg font-bold text-(--primary)">—</div>
+        </div>
+        <div id="larmor-result-card-bfield" class="rounded-lg py-2 transition-colors">
+          <span class="text-xs text-neutral-500 dark:text-neutral-400">对应磁场 B₀</span>
+          <div id="larmor-result-bfield" class="text-lg font-bold text-(--primary)">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-2 mt-4">
+      <button id="larmor-clear-btn" type="button" class="btn-plain px-4 py-1.5 rounded-lg text-sm hover:bg-(--btn-plain-bg-hover) transition-colors text-neutral-600 dark:text-neutral-400">
+        清除
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+// ============================================================
+// 核素数据（与 TypeScript 文件保持同步）
+// ============================================================
+const nuclides = [
+  { name: "氢-1",       symbol: "¹H",    spin: "1/2",  gamma: 42.5775, abundance: 99.98,  freqAt1T: 42.5775 },
+  { name: "氢-2 (氘)",   symbol: "²H",    spin: "1",    gamma: 6.536,   abundance: 0.015,  freqAt1T: 6.536 },
+  { name: "锂-7",        symbol: "⁷Li",   spin: "3/2",  gamma: 16.546,  abundance: 92.41,  freqAt1T: 16.546 },
+  { name: "硼-11",       symbol: "¹¹B",   spin: "3/2",  gamma: 13.66,   abundance: 80.1,   freqAt1T: 13.66 },
+  { name: "碳-13",       symbol: "¹³C",   spin: "1/2",  gamma: 10.7084, abundance: 1.07,   freqAt1T: 10.7084 },
+  { name: "氮-15",       symbol: "¹⁵N",   spin: "1/2",  gamma: -4.316,  abundance: 0.368,  freqAt1T: 4.316 },
+  { name: "氧-17",       symbol: "¹⁷O",   spin: "5/2",  gamma: -5.772,  abundance: 0.038,  freqAt1T: 5.772 },
+  { name: "氟-19",       symbol: "¹⁹F",   spin: "1/2",  gamma: 40.0776, abundance: 100,    freqAt1T: 40.0776 },
+  { name: "钠-23",       symbol: "²³Na",  spin: "3/2",  gamma: 11.262,  abundance: 100,    freqAt1T: 11.262 },
+  { name: "铝-27",       symbol: "²⁷Al",  spin: "5/2",  gamma: 11.094,  abundance: 100,    freqAt1T: 11.094 },
+  { name: "硅-29",       symbol: "²⁹Si",  spin: "1/2",  gamma: -8.465,  abundance: 4.68,   freqAt1T: 8.465 },
+  { name: "磷-31",       symbol: "³¹P",   spin: "1/2",  gamma: 17.235,  abundance: 100,    freqAt1T: 17.235 },
+  { name: "氙-129",      symbol: "¹²⁹Xe", spin: "1/2",  gamma: -11.78,  abundance: 26.4,   freqAt1T: 11.78 },
+];
+
+// ============================================================
+// LC 谐振计算
+// ============================================================
+function calcLcCircuit(C_pF, L_nH, f_MHz) {
+  const provided = [C_pF, L_nH, f_MHz].filter(v => v !== null && !isNaN(v)).length;
+  if (provided !== 2) return null;
+
+  if (C_pF !== null && !isNaN(C_pF) && L_nH !== null && !isNaN(L_nH)) {
+    const C = C_pF * 1e-12;
+    const L = L_nH * 1e-9;
+    const f = 1 / (2 * Math.PI * Math.sqrt(L * C));
+    return {
+      target: 'f',
+      capacitance_pF: round6(C_pF),
+      inductance_nH: round6(L_nH),
+      frequency_MHz: round6(f / 1e6),
+    };
+  }
+  if (C_pF !== null && !isNaN(C_pF) && f_MHz !== null && !isNaN(f_MHz)) {
+    const C = C_pF * 1e-12;
+    const f = f_MHz * 1e6;
+    const L = 1 / (4 * Math.PI * Math.PI * f * f * C);
+    return {
+      target: 'l',
+      capacitance_pF: round6(C_pF),
+      inductance_nH: round6(L * 1e9),
+      frequency_MHz: round6(f_MHz),
+    };
+  }
+  if (L_nH !== null && !isNaN(L_nH) && f_MHz !== null && !isNaN(f_MHz)) {
+    const L = L_nH * 1e-9;
+    const f = f_MHz * 1e6;
+    const C = 1 / (4 * Math.PI * Math.PI * f * f * L);
+    return {
+      target: 'c',
+      capacitance_pF: round6(C * 1e12),
+      inductance_nH: round6(L_nH),
+      frequency_MHz: round6(f_MHz),
+    };
+  }
+  return null;
+}
+
+function round6(val) {
+  return Math.round(val * 1e6) / 1e6;
+}
+
+// ============================================================
+// DOM 初始化
+// ============================================================
+(function init() {
+  initNuclideSelect();
+  initLcInputs();
+  initLarmorInputs();
+  initClearButtons();
+})();
+
+function initNuclideSelect() {
+  const select = document.getElementById('nuclide-select');
+  if (!select) return;
+
+  nuclides.forEach((n, i) => {
+    const option = document.createElement('option');
+    option.value = i;
+    option.textContent = `${n.symbol} — ${n.name}`;
+    select.appendChild(option);
+  });
+
+  // 默认选择 ¹H
+  select.value = '0';
+  updateNuclideInfo(nuclides[0]);
+
+  select.addEventListener('change', () => {
+    const nuclide = nuclides[parseInt(select.value)];
+    if (nuclide) {
+      updateNuclideInfo(nuclide);
+      updateLarmorFromNuclideChange();
+    }
+  });
+}
+
+function updateNuclideInfo(nuclide) {
+  const spinEl = document.getElementById('nuclide-spin');
+  const gammaEl = document.getElementById('nuclide-gamma');
+  const abundEl = document.getElementById('nuclide-abundance');
+  if (spinEl) spinEl.textContent = `自旋: ${nuclide.spin}`;
+  if (gammaEl) gammaEl.textContent = `γ̅: ${nuclide.gamma} MHz/T`;
+  if (abundEl) abundEl.textContent = `丰度: ${nuclide.abundance}%`;
+}
+
+// ============================================================
+// LC 电路计算交互
+// ============================================================
+function initLcInputs() {
+  const cInput = document.getElementById('lc-capacitance');
+  const lInput = document.getElementById('lc-inductance');
+  const fInput = document.getElementById('lc-frequency');
+  const lcRecalc = document.getElementById('lc-recalc-btn');
+
+  let curResult = null;
+
+  if (!cInput || !lInput || !fInput) return;
+
+  // 输入变化时仅更新结果展示，不自动回填第三项
+  function handleInput() {
+    const C = cInput.value !== '' ? parseFloat(cInput.value) : null;
+    const L = lInput.value !== '' ? parseFloat(lInput.value) : null;
+    const F = fInput.value !== '' ? parseFloat(fInput.value) : null;
+
+    const provided = [C, L, F].filter(v => v !== null && !isNaN(v)).length;
+
+    if (provided === 3) {
+      // 三项都填了：显示当前结果
+      const result = calcLcCircuit(C, L, F);
+      if (result) {
+        showLcResult(result.capacitance_pF, result.inductance_nH, result.frequency_MHz, result.target);
+      }
+      return;
+    }
+
+    if (provided === 2) {
+      const result = calcLcCircuit(C, L, F);
+      curResult = result;
+      if (result) {
+        showLcResult(result.capacitance_pF, result.inductance_nH, result.frequency_MHz, result.target);
+        return;
+      }
+    }
+    hideLcResult();
+  }
+
+  // 「重算」按钮：清除目标输入框，用另外两项计算结果并填入
+  function recalc() {
+    const C = cInput.value !== '' ? parseFloat(cInput.value) : null;
+    const L = lInput.value !== '' ? parseFloat(lInput.value) : null;
+    const F = fInput.value !== '' ? parseFloat(fInput.value) : null;
+
+    // 先清除目标字段
+    if (curResult.target === 'c') {
+      cInput.value = curResult.capacitance_pF;
+      lInput.value = '';
+      fInput.value = '';
+    } else if (curResult.target === 'l') {
+      cInput.value = '';
+      lInput.value = curResult.inductance_nH;
+      fInput.value = '';
+    } else if (curResult.target === 'f') {
+      cInput.value = '';
+      lInput.value = '';
+      fInput.value = curResult.frequency_MHz;
+    }
+
+    // 重新读取（目标字段已空）
+    const C2 = cInput.value !== '' ? parseFloat(cInput.value) : null;
+    const L2 = lInput.value !== '' ? parseFloat(lInput.value) : null;
+    const F2 = fInput.value !== '' ? parseFloat(fInput.value) : null;
+
+    const result = calcLcCircuit(C2, L2, F2);
+    if (!result) return;
+
+    // 将计算结果填入目标字段
+    if (curResult.target === 'c') cInput.value = result.capacitance_pF;
+    else if (curResult.target === 'l') lInput.value = result.inductance_nH;
+    else if (curResult.target === 'f') fInput.value = result.frequency_MHz;
+
+    showLcResult(result.capacitance_pF, result.inductance_nH, result.frequency_MHz, result.target);
+  }
+
+  cInput.addEventListener('input', handleInput);
+  lInput.addEventListener('input', handleInput);
+  fInput.addEventListener('input', handleInput);
+
+  if (recalc) lcRecalc.addEventListener('click', () => recalc());
+}
+
+function showLcResult(C, L, F, highlight) {
+  const container = document.getElementById('lc-result');
+  const cEl = document.getElementById('lc-result-c');
+  const lEl = document.getElementById('lc-result-l');
+  const fEl = document.getElementById('lc-result-f');
+  const cardC = document.getElementById('lc-result-card-c');
+  const cardL = document.getElementById('lc-result-card-l');
+  const cardF = document.getElementById('lc-result-card-f');
+
+  if (container) container.classList.remove('hidden');
+  if (cEl) cEl.textContent = C !== null && !isNaN(C) ? `${C.toFixed(3)} pF` : '—';
+  if (lEl) lEl.textContent = L !== null && !isNaN(L) ? `${L.toFixed(3)} nH` : '—';
+  if (fEl) fEl.textContent = F !== null && !isNaN(F) ? `${F.toFixed(4)} MHz` : '—';
+
+  // 高亮当前计算的项
+  const highlightClass = 'bg-(--primary)/15';
+  [cardC, cardL, cardF].forEach(c => { if (c) c.classList.remove(highlightClass); });
+  if (highlight === 'c' && cardC) cardC.classList.add(highlightClass);
+  if (highlight === 'l' && cardL) cardL.classList.add(highlightClass);
+  if (highlight === 'f' && cardF) cardF.classList.add(highlightClass);
+}
+
+function hideLcResult() {
+  const container = document.getElementById('lc-result');
+  if (container) container.classList.add('hidden');
+}
+
+// ============================================================
+// 拉莫尔频率计算交互
+// ============================================================
+function initLarmorInputs() {
+  const bInput = document.getElementById('bfield-input');
+  const fInput = document.getElementById('larmor-freq-input');
+
+  if (!bInput || !fInput) return;
+
+  // 输入 B 时：清除频率输入框，仅更新结果展示
+  function handleBField() {
+    fInput.value = '';
+
+    const bVal = bInput.value !== '' ? parseFloat(bInput.value) : null;
+    if (bVal === null || isNaN(bVal)) {
+      hideLarmorResult();
+      return;
+    }
+
+    const select = document.getElementById('nuclide-select');
+    const nuclide = nuclides[parseInt(select.value)];
+    if (!nuclide) return;
+
+    const gamma = Math.abs(nuclide.gamma);
+    const freq = gamma * bVal;
+    showLarmorResult(freq, bVal, 'f');
+  }
+
+  // 输入 f 时：清除磁场输入框，仅更新结果展示
+  function handleFreq() {
+    bInput.value = '';
+
+    const fVal = fInput.value !== '' ? parseFloat(fInput.value) : null;
+    if (fVal === null || isNaN(fVal)) {
+      hideLarmorResult();
+      return;
+    }
+
+    const select = document.getElementById('nuclide-select');
+    const nuclide = nuclides[parseInt(select.value)];
+    if (!nuclide) return;
+
+    const gamma = Math.abs(nuclide.gamma);
+    const bField = fVal / gamma;
+    showLarmorResult(fVal, bField, 'b');
+  }
+
+  bInput.addEventListener('input', handleBField);
+  fInput.addEventListener('input', handleFreq);
+}
+
+/** 当切换核素时，根据当前有值的那个输入框重新计算结果 */
+function updateLarmorFromNuclideChange() {
+  const bInput = document.getElementById('bfield-input');
+  const fInput = document.getElementById('larmor-freq-input');
+  const bVal = bInput.value !== '' ? parseFloat(bInput.value) : null;
+  const fVal = fInput.value !== '' ? parseFloat(fInput.value) : null;
+
+  const select = document.getElementById('nuclide-select');
+  const nuclide = nuclides[parseInt(select.value)];
+  if (!nuclide) return;
+
+  if (bVal !== null && !isNaN(bVal)) {
+    const gamma = Math.abs(nuclide.gamma);
+    const freq = gamma * bVal;
+    showLarmorResult(freq, bVal, 'f');
+  } else if (fVal !== null && !isNaN(fVal)) {
+    const gamma = Math.abs(nuclide.gamma);
+    const bField = fVal / gamma;
+    showLarmorResult(fVal, bField, 'b');
+  } else {
+    hideLarmorResult();
+  }
+}
+
+function showLarmorResult(freq, bField, highlight) {
+  const container = document.getElementById('larmor-result');
+  const freqEl = document.getElementById('larmor-result-freq');
+  const bEl = document.getElementById('larmor-result-bfield');
+  const cardFreq = document.getElementById('larmor-result-card-freq');
+  const cardB = document.getElementById('larmor-result-card-bfield');
+
+  if (container) container.classList.remove('hidden');
+  if (freqEl) freqEl.textContent = `${freq.toFixed(4)} MHz`;
+  if (bEl) bEl.textContent = `${bField.toFixed(4)} T`;
+
+  // 高亮当前计算的项
+  const highlightClass = 'bg-(--primary)/15';
+  [cardFreq, cardB].forEach(c => { if (c) c.classList.remove(highlightClass); });
+  if (highlight === 'f' && cardFreq) cardFreq.classList.add(highlightClass);
+  if (highlight === 'b' && cardB) cardB.classList.add(highlightClass);
+}
+
+function hideLarmorResult() {
+  const container = document.getElementById('larmor-result');
+  if (container) container.classList.add('hidden');
+}
+
+// ============================================================
+// 清除按钮
+// ============================================================
+function initClearButtons() {
+  const lcClear = document.getElementById('lc-clear-btn');
+  const larmorClear = document.getElementById('larmor-clear-btn');
+
+  if (lcClear) {
+    lcClear.addEventListener('click', () => {
+      document.getElementById('lc-capacitance').value = '';
+      document.getElementById('lc-inductance').value = '';
+      document.getElementById('lc-frequency').value = '';
+      hideLcResult();
+    });
+  }
+
+  if (larmorClear) {
+    larmorClear.addEventListener('click', () => {
+      document.getElementById('bfield-input').value = '';
+      document.getElementById('larmor-freq-input').value = '';
+      hideLarmorResult();
+    });
+  }
+}
+</script>
+
+<style>
+  /* 移除数字输入框的上下箭头：Firefox */
+  .nmr-calc-wrapper input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  /* 移除数字输入框的上下箭头：Chrome/Safari */
+  .nmr-calc-wrapper input[type="number"]::-webkit-inner-spin-button,
+  .nmr-calc-wrapper input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+</style>

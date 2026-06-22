@@ -49,6 +49,21 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		],
 	});
 
+	links.push({
+		name: "工具",
+		url: "/tools/",
+		icon: "material-symbols:tools-wrench",
+
+		children: [
+			{
+				name: "NMR RF Calc",
+				url: "/tools/nmr-rf-calculator/",
+				external: false,
+				icon: "material-symbols:wifi-rounded"
+			}
+		]
+	});
+
 	// 自定义导航栏链接,并且支持多级菜单
 	links.push({
 		name: "外链",

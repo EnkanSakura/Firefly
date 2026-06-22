@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon/components";
+import NMRRFCalculator from "@components/tools/NmrRfCalculator.astro";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+
+const title = "NMR RF常见参数计算器";
+const description = "LC谐振电路计算 & 拉莫尔频率计算器。";
+---
+
+<MainGridLayout title={title} description={description}>
+  <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32">
+    <div class="card-base z-10 px-6 py-6 md:px-9 md:py-6 relative w-full">
+      <!-- 页面标题 -->
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70">
+            <Icon name="material-symbols:science-outline" class="text-[1.25rem]" />
+          </div>
+          <div class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+            NMR RF常见参数计算器
+          </div>
+        </div>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-3xl">
+          支持 LC 谐振电路参数计算与 Larmor 频率计算。
+        </p>
+      </div>
+
+      <!-- 计算器组件 -->
+      <NMRRFCalculator />
+    </div>
+  </div>
+</MainGridLayout>
