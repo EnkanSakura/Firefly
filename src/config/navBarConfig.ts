@@ -47,9 +47,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				icon: "material-symbols:info",
 				external: false,
 			},
-			// 根据配置决定是否添加番组计划，在siteConfig关闭pages.bangumi时导航栏不显示番组计划
 			...(siteConfig.pages.bangumi ? [LinkPresets.Bangumi] : []),
-			// 根据配置决定是否添加相册，在siteConfig关闭pages.gallery时导航栏不显示相册
+			...(siteConfig.pages.anime ? [LinkPresets.Anime] : []),
 			...(siteConfig.pages.gallery ? [LinkPresets.Gallery] : []),
 		],
 	});
@@ -192,6 +191,12 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		url: "/gallery/",
 		icon: "material-symbols:photo-library",
 		pageKey: "gallery",
+	},
+	Anime: {
+		name: "追番",
+		url: "/anime/",
+		icon: "material-symbols:live-tv",
+		pageKey: "anime",
 	},
 };
 
