@@ -1,9 +1,9 @@
 ---
 import { Icon } from "astro-icon/components";
-import NMRRFCalculator from "@components/tools/NmrRfCalculator.astro";
+import NmrRfCalculator from "@components/tools/NmrRfCalculator.astro";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
-const title = "NMR RF常见参数计算器";
+const title = "NMR RF计算器";
 const description = "LC谐振电路计算 & 拉莫尔频率计算器。";
 ---
 
@@ -17,7 +17,7 @@ const description = "LC谐振电路计算 & 拉莫尔频率计算器。";
             <Icon name="material-symbols:science-outline" class="text-[1.25rem]" />
           </div>
           <div class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-            NMR RF常见参数计算器
+            NMR RF计算器
           </div>
         </div>
         <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-3xl">
@@ -26,7 +26,7 @@ const description = "LC谐振电路计算 & 拉莫尔频率计算器。";
       </div>
 
       <!-- 计算器组件 -->
-      <NMRRFCalculator />
+      <NmrRfCalculator />
     </div>
   </div>
 </MainGridLayout>

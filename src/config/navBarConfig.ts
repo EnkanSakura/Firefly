@@ -61,7 +61,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 
 		children: [
 			{
-				name: "NMR RF Calc",
+				name: "NMR RF计算器",
 				url: "/tools/nmr-rf-calculator/",
 				external: false,
 				icon: "material-symbols:wifi-rounded"

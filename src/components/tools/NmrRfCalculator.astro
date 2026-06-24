@@ -332,10 +332,6 @@ function initLcInputs() {
 
   // 「重算」按钮：清除目标输入框，用另外两项计算结果并填入
   function recalc() {
-    const C = cInput.value !== '' ? parseFloat(cInput.value) : null;
-    const L = lInput.value !== '' ? parseFloat(lInput.value) : null;
-    const F = fInput.value !== '' ? parseFloat(fInput.value) : null;
-
     // 先清除目标字段
     if (curResult.target === 'c') {
       cInput.value = curResult.capacitance_pF;
@@ -352,11 +348,11 @@ function initLcInputs() {
     }
 
     // 重新读取（目标字段已空）
-    const C2 = cInput.value !== '' ? parseFloat(cInput.value) : null;
-    const L2 = lInput.value !== '' ? parseFloat(lInput.value) : null;
-    const F2 = fInput.value !== '' ? parseFloat(fInput.value) : null;
+    const C = cInput.value !== '' ? parseFloat(cInput.value) : null;
+    const L = lInput.value !== '' ? parseFloat(lInput.value) : null;
+    const F = fInput.value !== '' ? parseFloat(fInput.value) : null;
 
-    const result = calcLcCircuit(C2, L2, F2);
+    const result = calcLcCircuit(C, L, F);
     if (!result) return;
 
     // 将计算结果填入目标字段
