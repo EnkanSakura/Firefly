@@ -110,6 +110,8 @@ export const siteConfig: SiteConfig = {
 		gallery: true,
 		// 追番页面开关
 		anime: false,
+		// dota2记录页面开关
+		dota2: true,
 	},
 
 	// 分类导航栏开关，在首页和归档页顶部显示分类快捷导航
@@ -176,6 +178,18 @@ export const siteConfig: SiteConfig = {
 		// 可选值: "anime" | "book" | "music" | "game" | "real" (暂不支持"real"类型)
 		// 未列出的类型将按默认顺序排在后面
 		categoryOrder: ["book", "anime", "music", "game"],
+	},
+
+	// Dota2 比赛记录配置
+	// API Token 通过环境变量 STRATZ_API_KEY 设置，从 https://stratz.com/api 获取
+	dota2: {
+		// 你的 Steam 32-bit Account ID（可通过 https://steamid.io 查询）
+		// 注意：这是 SteamID32（如 123456789），不是 SteamID64
+		playerId: 219966538,
+		// 获取的比赛数量，默认 20
+		matchCount: 30,
+		// 数据模式：static=构建时获取，dynamic=客户端实时获取
+		mode: "dynamic",
 	},
 
 	// 追番配置（Bilibili + TMDB）

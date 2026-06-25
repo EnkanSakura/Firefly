@@ -85,6 +85,7 @@ export type SiteConfig = {
 		bangumi: boolean;
 		gallery: boolean; // 相册页面开关
 		anime: boolean; // 追番页面开关
+		dota2: boolean; // Dota2 比赛记录页面开关
 	};
 
 	// 分类导航栏开关
@@ -133,6 +134,14 @@ export type SiteConfig = {
 		apiUrl?: string; // Bangumi API 地址
 		subjectBaseUrl?: string; // 条目详情页地址
 		categoryOrder?: ("anime" | "game" | "book" | "music" | "real")[]; // 条目类型排序顺序
+	};
+
+	// Dota2 比赛记录配置
+	// API Token 通过环境变量 STRATZ_API_KEY 设置
+	dota2?: {
+		playerId?: number; // Steam 32-bit Account ID
+		matchCount?: number; // 获取的比赛数量
+		mode?: "static" | "dynamic"; // 数据模式
 	};
 
 	// 追番配置（Bilibili + TMDB）

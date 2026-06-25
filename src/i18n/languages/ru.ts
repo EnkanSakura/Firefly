@@ -153,6 +153,29 @@ export const ru: Translation = {
 	[Key.bangumiUpdatedAt]: "Время сборки",
 	[Key.bangumiDataStatic]: "Статические данные",
 
+	// Dota2 Записи матчей
+	[Key.dota2]: "Dota2",
+	[Key.dota2Title]: "Записи матчей Dota2",
+	[Key.dota2Subtitle]: "История матчей Dota2, данные из Stratz API",
+	[Key.dota2LastUpdated]: "Данные обновлены",
+	[Key.dota2NotConfigured]: "Dota2 не настроен",
+	[Key.dota2NotConfiguredDesc]: "Настройте Steam Player ID и Stratz API Token в src/config/siteConfig.ts",
+	[Key.dota2FetchError]: "Не удалось получить данные матчей",
+	[Key.dota2FetchErrorDesc]: "Проверьте API Token и сетевое подключение",
+	[Key.dota2Empty]: "Нет данных о матчах",
+	[Key.dota2EmptyReason]: "Для этой учетной записи нет доступных записей матчей",
+	[Key.dota2MatchId]: "ID матча",
+	[Key.dota2Position]: "Позиция",
+	[Key.dota2Result]: "Результат",
+	[Key.dota2Win]: "Победа",
+	[Key.dota2Loss]: "Поражение",
+	[Key.dota2KDA]: "K/D/A",
+	[Key.dota2DateTime]: "Дата",
+	[Key.dota2Duration]: "Длительность",
+	[Key.dota2Hero]: "Герой",
+	[Key.dota2NetWorth]: "Ценность",
+	[Key.dota2ConfigTip]: "Укажите свой Steam Player ID и Stratz API Token в настройках сайта",
+
 	// Отслеживание аниме
 	[Key.anime]: "Аниме",
 	[Key.animeSubtitle]:

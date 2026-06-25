@@ -49,6 +49,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			},
 			...(siteConfig.pages.bangumi ? [LinkPresets.Bangumi] : []),
 			...(siteConfig.pages.anime ? [LinkPresets.Anime] : []),
+			...(siteConfig.pages.dota2 ? [LinkPresets.Dota2] : []),
 			...(siteConfig.pages.gallery ? [LinkPresets.Gallery] : []),
 		],
 	});
@@ -197,6 +198,12 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		url: "/anime/",
 		icon: "material-symbols:live-tv",
 		pageKey: "anime",
+	},
+	Dota2: {
+		name: "Dota2",
+		url: "/dota2/",
+		icon: "material-symbols:swords-outline",
+		pageKey: "dota2",
 	},
 };
 

@@ -1,0 +1,192 @@
+---
+import { Icon } from "astro-icon/components";
+import DotaMatchList from "@/components/pages/dota2/DotaMatchList.svelte";
+import { siteConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import type { Match, StratzPlayerResponse } from "@/types/dota2";
+import { formatDateI18nWithTime } from "@/utils/date-utils";
+
+// 检查页面是否启用
+if (!siteConfig.pages.dota2) {
+	return Astro.redirect("/404/");
+}
+
+// 获取构建时间
+const buildTime = formatDateI18nWithTime(new Date());
+
+// Dota2 配置
+const dota2Config = {
+	playerId: siteConfig.dota2?.playerId,
+	matchCount: siteConfig.dota2?.matchCount || 20,
+	mode: (siteConfig.dota2?.mode || "static") as "static" | "dynamic",
+	apiToken: import.meta.env.STRATZ_API_KEY,
+};
+
+const isDynamic = dota2Config.mode === "dynamic";
+
+// 检查是否已配置
+const isConfigured =
+	dota2Config.playerId != null &&
+	dota2Config.playerId !== undefined &&
+	dota2Config.apiToken != null &&
+	String(dota2Config.apiToken).trim() !== "";
+
+// Static 模式：构建时获取数据
+let matches: Match[] = [];
+let playerName = "";
+let fetchFailed = false;
+
+if (!isDynamic && isConfigured) {
+	const query = `
+		query($steamAccountId: Long!, $take: Int!) {
+			player(steamAccountId: $steamAccountId) {
+				steamAccount { id name }
+				matches(request: { take: $take }) {
+					id
+					endDateTime
+					durationSeconds
+					didRadiantWin
+					players(steamAccountId: $steamAccountId) {
+						steamAccount { id name }
+						hero { id name displayName shortName }
+						isRadiant
+						kills
+						deaths
+						assists
+						networth
+						position
+					}
+				}
+			}
+		}
+	`;
+
+	try {
+		console.log(`[Dota2] 正在获取玩家 ${dota2Config.playerId} 的比赛数据...`);
+
+		const resp = await fetch("https://api.stratz.com/graphql", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${dota2Config.apiToken}`,
+			},
+			body: JSON.stringify({
+				query,
+				variables: {
+					steamAccountId: dota2Config.playerId,
+					take: dota2Config.matchCount,
+				},
+			}),
+		});
+
+		if (!resp.ok) {
+			throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+		}
+
+		const json: StratzPlayerResponse = await resp.json();
+
+		if (json.errors?.length) {
+			throw new Error(json.errors.map((e) => e.message).join("; "));
+		}
+
+		const player = json.data?.player;
+		matches = player?.matches || [];
+		playerName = player?.steamAccount?.name || String(dota2Config.playerId);
+
+		console.log(`[Dota2] 获取到 ${matches.length} 场比赛数据`);
+	} catch (err) {
+		console.error("[Dota2] 获取比赛数据失败:", err);
+		fetchFailed = true;
+	}
+}
+
+const title = i18n(I18nKey.dota2Title);
+const description = i18n(I18nKey.dota2Subtitle);
+---
+
+<MainGridLayout title={title} description={description}>
+  <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32">
+    <div class="card-base z-10 px-6 py-6 md:px-9 md:py-6 relative w-full">
+      <!-- 页面标题 -->
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70">
+            <Icon name="material-symbols:swords-outline" class="text-[1.25rem]" />
+          </div>
+          <div class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+            {title}
+          </div>
+        </div>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-3xl">
+          {description}
+        </p>
+        {!isDynamic && (
+          <p class="text-xs text-neutral-500 dark:text-neutral-500 mt-2">
+            {i18n(I18nKey.dota2LastUpdated)} {buildTime}
+          </p>
+        )}
+      </div>
+
+      {isDynamic ? (
+        /* ==================== Dynamic 模式 ==================== */
+        <>
+          {!isConfigured ? (
+            <div class="text-center py-16">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-(--btn-regular-bg) rounded-full mb-6 border border-(--line-divider)">
+                <Icon is:inline name="material-symbols:settings" class="text-[2rem] text-(--btn-content)" />
+              </div>
+              <h2 class="text-xl font-semibold text-black/80 dark:text-white/80 mb-3">
+                {i18n(I18nKey.dota2NotConfigured)}
+              </h2>
+              <p class="text-black/60 dark:text-white/60 mb-4 max-w-md mx-auto text-sm">
+                {i18n(I18nKey.dota2NotConfiguredDesc)}
+              </p>
+            </div>
+          ) : (
+            <DotaMatchList
+              client:load
+              fetchConfig={{
+                playerId: dota2Config.playerId!,
+                matchCount: dota2Config.matchCount,
+                apiToken: dota2Config.apiToken!,
+              }}
+            />
+          )}
+        </>
+      ) : (
+        /* ==================== Static 模式 ==================== */
+        <>
+          {fetchFailed ? (
+            <div class="text-center py-16">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-(--btn-regular-bg) rounded-full mb-6 border border-(--line-divider)">
+                <Icon is:inline name="material-symbols:error-outline" class="text-[2rem] text-red-500" />
+              </div>
+              <h2 class="text-xl font-semibold text-black/80 dark:text-white/80 mb-3">
+                {i18n(I18nKey.dota2FetchError)}
+              </h2>
+              <p class="text-black/60 dark:text-white/60 mb-4 max-w-md mx-auto text-sm">
+                {i18n(I18nKey.dota2FetchErrorDesc)}
+              </p>
+            </div>
+          ) : matches.length > 0 ? (
+            <DotaMatchList client:load matches={matches} playerName={playerName} />
+          ) : (
+            <div class="text-center py-16">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-(--btn-regular-bg) rounded-full mb-6 border border-(--line-divider)">
+                <Icon is:inline name="material-symbols:settings" class="text-[2rem] text-(--btn-content)" />
+              </div>
+              <h2 class="text-xl font-semibold text-black/80 dark:text-white/80 mb-3">
+                {isConfigured ? i18n(I18nKey.dota2Empty) : i18n(I18nKey.dota2NotConfigured)}
+              </h2>
+              <p class="text-black/60 dark:text-white/60 mb-4 max-w-md mx-auto text-sm">
+                {isConfigured ? i18n(I18nKey.dota2EmptyReason) : i18n(I18nKey.dota2NotConfiguredDesc)}
+              </p>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  </div>
+</MainGridLayout>
