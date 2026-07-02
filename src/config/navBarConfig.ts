@@ -60,18 +60,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		icon: "material-symbols:tools-wrench",
 
 		children: [
-			{
-				name: "NMR RF计算器",
-				url: "/tools/nmr-rf-calculator/",
-				external: false,
-				icon: "material-symbols:wifi-rounded"
-			},
-			{
-				name: "",
-				url: "",
-				external: false,
-				icon: ""
-			},
+			LinkPresets.NMRCalc,
+			LinkPresets.MdEditor
 		]
 	});
 
@@ -177,7 +167,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		pageKey: "guestbook",
 	},
 	About: {
-		name: "关于我",
+		name: "关于",
 		url: "/about/",
 		icon: "material-symbols:person",
 	},
@@ -200,10 +190,22 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		pageKey: "anime",
 	},
 	Dota2: {
-		name: "Dota2",
+		name: "Dota2 比赛记录",
 		url: "/dota2/",
 		icon: "material-symbols:swords-outline",
 		pageKey: "dota2",
+	},
+	NMRCalc: {
+		name: "NMR RF 计算器",
+		url: "/tools/nmr-rf-calculator/",
+		external: false,
+		icon: "material-symbols:wifi-rounded"
+	},
+	MdEditor: {
+		name: "Markdown 编辑器",
+		url: "/tools/markdown-editor/",
+		external: false,
+		icon: "material-symbols:docs"
 	},
 };
 
