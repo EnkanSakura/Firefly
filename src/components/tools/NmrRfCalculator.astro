@@ -93,6 +93,45 @@
         清除
       </button>
     </div>
+
+    <!-- 分隔线 -->
+    <hr class="my-6 border-neutral-200 dark:border-neutral-700" />
+
+    <!-- 目标频率匹配 -->
+    <div>
+      <div class="flex items-center gap-3 mb-5">
+        <div class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70 shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">目标频率匹配</h3>
+      </div>
+      <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-5">
+        已知当前电容 C₁ 和当前频率 f₁，输入目标频率 f₂，自动计算所需电容 C₂。
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+        <div>
+          <label for="target-c1" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">当前电容 C₁ (pF)</label>
+          <input id="target-c1" type="number" step="any" min="0" placeholder="" class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors" />
+        </div>
+        <div>
+          <label for="target-f1" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">当前频率 f₁ (MHz)</label>
+          <input id="target-f1" type="number" step="any" min="0" placeholder="" class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors" />
+        </div>
+        <div>
+          <label for="target-f2" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">目标频率 f₂ (MHz)</label>
+          <input id="target-f2" type="number" step="any" min="0" placeholder="" class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 text-sm focus:ring-2 focus:ring-(--primary) focus:border-(--primary) outline-hidden transition-colors" />
+        </div>
+      </div>
+
+      <!-- 结果显示 -->
+      <div id="target-match-result" class="hidden p-4 rounded-lg bg-(--primary)/8 dark:bg-(--btn-regular-bg) border border-(--primary)/30 dark:border-none">
+        <div class="text-center">
+          <span class="text-xs text-neutral-500 dark:text-neutral-400">所需电容 C₂</span>
+          <div id="target-match-c2" class="text-lg font-bold text-(--primary)">—</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- 拉莫尔频率计算 -->
@@ -253,6 +292,7 @@ function round6(val) {
   initNuclideSelect();
   initLcInputs();
   initLarmorInputs();
+  initTargetMatch();
   initClearButtons();
 })();
 
@@ -518,6 +558,46 @@ function initClearButtons() {
       hideLarmorResult();
     });
   }
+}
+
+// ============================================================
+// 目标频率匹配交互
+// ============================================================
+function initTargetMatch() {
+  const c1Input = document.getElementById('target-c1');
+  const f1Input = document.getElementById('target-f1');
+  const f2Input = document.getElementById('target-f2');
+
+  if (!c1Input || !f1Input || !f2Input) return;
+
+  function compute() {
+    const C1 = parseFloat(c1Input.value);
+    const F1 = parseFloat(f1Input.value);
+    const F2 = parseFloat(f2Input.value);
+
+    if (!isNaN(C1) && !isNaN(F1) && !isNaN(F2) && C1 > 0 && F1 > 0 && F2 > 0) {
+      const C2 = C1 * Math.pow(F1 / F2, 2);
+      showTargetMatchResult(C2);
+    } else {
+      hideTargetMatchResult();
+    }
+  }
+
+  c1Input.addEventListener('input', compute);
+  f1Input.addEventListener('input', compute);
+  f2Input.addEventListener('input', compute);
+}
+
+function showTargetMatchResult(C2) {
+  const container = document.getElementById('target-match-result');
+  const c2El = document.getElementById('target-match-c2');
+  if (container) container.classList.remove('hidden');
+  if (c2El) c2El.textContent = `${C2.toFixed(3)} pF`;
+}
+
+function hideTargetMatchResult() {
+  const container = document.getElementById('target-match-result');
+  if (container) container.classList.add('hidden');
 }
 </script>
 
