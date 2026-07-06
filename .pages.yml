@@ -1,0 +1,48 @@
+media:
+  input: public
+  output: /
+content:
+  - name: posts
+    label: Posts
+    type: collection
+    path: src/content/posts
+    view:
+      fields: [ title, draft, published ]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: published, label: Published, type: date }
+      - { name: updated, label: Updated, type: date }
+      - { name: description, label: Description, type: string }
+      - { name: image, label: Image, type: string }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: category, label: Category, type: string }
+      - { name: draft, label: Draft, type: boolean }
+      - { name: pinned, label: Pinned, type: boolean }
+      - { name: slug, label: Slug, type: string }
+      - { name: lang, label: Lang, type: string }
+      - { name: author, label: Author, type: string }
+      - { name: comment, label: Comment, type: boolean }
+      - { name: licenseName, label: LicenseName, type: string }
+      - { name: licenseUrl, label: LicenseUrl, type: string }
+      - { name: password, label: Password, type: string }
+      - { name: passwordHint, label: PasswordHint, type: string }
+      - { name: body, label: Body, type: rich-text }
+    filename: "page.md"
+  
+  - name: about
+    label: About page
+    type: file
+    path: src/content/spec/about.md
+    fields:
+      - { name: layout, type: string, hidden: true, default: "../layouts/AboutLayout.astro" }
+      - { name: title, label: Title, type: string }
+      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+
+  - name: friends
+    label: Friends page
+    type: file
+    path: src/content/spec/friends.mdx
+    fields:
+      - { name: layout, type: string, hidden: true, default: "../layouts/AboutLayout.astro" }
+      - { name: title, label: Title, type: string }
+      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
