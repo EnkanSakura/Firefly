@@ -16,12 +16,12 @@ content:
       - { name: image, label: Image, type: string }
       - { name: tags, label: Tags, type: string, list: true }
       - { name: category, label: Category, type: string }
-      - { name: draft, label: Draft, type: boolean }
-      - { name: pinned, label: Pinned, type: boolean }
+      - { name: draft, label: Draft, type: boolean, default: false}
+      - { name: pinned, label: Pinned, type: boolean, default: false }
       - { name: slug, label: Slug, type: string }
       - { name: lang, label: Lang, type: string }
-      - { name: author, label: Author, type: string }
-      - { name: comment, label: Comment, type: boolean }
+      - { name: author, label: Author, type: string, default: "EnkanSakura" }
+      - { name: comment, label: Comment, type: boolean, default: true }
       - { name: licenseName, label: LicenseName, type: string }
       - { name: licenseUrl, label: LicenseUrl, type: string }
       - { name: password, label: Password, type: string }
