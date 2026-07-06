@@ -1,6 +1,16 @@
 media:
-  input: public
-  output: /
+  - name: public
+    label: Public
+    input: public
+    output: /public
+  - name: assets
+    label: Assets
+    input: src/assets
+    output: /src/assets
+  - name: posts
+    label: Posts
+    input: src/content/posts
+    output: /src/content/posts
 content:
   - name: posts
     label: Posts
@@ -30,7 +40,7 @@ content:
     filename: "page.md"
   
   - name: about
-    label: About page
+    label: About
     type: file
     path: src/content/spec/about.md
     fields:
@@ -39,7 +49,7 @@ content:
       - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
 
   - name: friends
-    label: Friends page
+    label: Friends
     type: file
     path: src/content/spec/friends.mdx
     fields:
