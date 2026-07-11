@@ -70,6 +70,7 @@ if (!isDynamic && isConfigured) {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+        "User-Agent": "STRATZ_API",
 				Authorization: `Bearer ${dota2Config.apiToken}`,
 			},
 			body: JSON.stringify({

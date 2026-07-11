@@ -1,58 +1,342 @@
 media:
-  - name: public
-    label: Public
+  - name: assets
+    label: 站点资源
+    input: src/assets
+    output: /assets
+
+  - name: posts
+    label: 文章配图
+    input: src/content/posts
+    output: /posts
+
+  - name: statics
+    label: 静态资源
     input: public
     output: /public
-  - name: assets
-    label: Assets
-    input: src/assets
-    output: /src/assets
-  - name: posts
-    label: Posts
-    input: src/content/posts
-    output: /src/content/posts
-content:
-  - name: posts
-    label: Posts
-    type: collection
-    path: src/content/posts
-    view:
-      fields: [ title, draft, published ]
-    fields:
-      - { name: title, label: Title, type: string, required: true }
-      - { name: published, label: Published, type: date }
-      - { name: updated, label: Updated, type: date }
-      - { name: description, label: Description, type: string }
-      - { name: image, label: Image, type: string }
-      - { name: tags, label: Tags, type: string, list: true }
-      - { name: category, label: Category, type: string }
-      - { name: draft, label: Draft, type: boolean, default: false}
-      - { name: pinned, label: Pinned, type: boolean, default: false }
-      - { name: slug, label: Slug, type: string }
-      - { name: lang, label: Lang, type: string }
-      - { name: author, label: Author, type: string, default: "EnkanSakura" }
-      - { name: comment, label: Comment, type: boolean, default: true }
-      - { name: licenseName, label: LicenseName, type: string }
-      - { name: licenseUrl, label: LicenseUrl, type: string }
-      - { name: password, label: Password, type: string }
-      - { name: passwordHint, label: PasswordHint, type: string }
-      - { name: body, label: Body, type: rich-text }
-    filename: "page.md"
-  
-  - name: about
-    label: About
-    type: file
-    path: src/content/spec/about.md
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/AboutLayout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
 
-  - name: friends
-    label: Friends
-    type: file
-    path: src/content/spec/friends.mdx
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/AboutLayout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+content:
+  # ============================================================
+  # 📝 内容页面
+  # ============================================================
+  - name: content-group
+    label: 📝 内容页面
+    type: group
+    items:
+      # 博客文章 (collection)
+    - name: posts
+      label: 📝 博客文章
+      type: collection
+      path: src/content/posts
+      view:
+        primary: title
+        fields: [title, published, tags, category, draft, pinned]
+        sort: ["published desc", "title asc"]
+        search: [title, description, tags, category]
+        default:
+          sort: published
+          order: desc
+      fields:
+        - name: title
+          label: 标题
+          type: string
+          required: true
+
+        - name: published
+          label: 发布时间
+          type: date
+
+        - name: updated
+          label: 更新时间
+          type: date
+
+        - name: description
+          label: 摘要
+          type: string
+
+        - name: image
+          label: 封面
+          type: string
+
+        - name: tags
+          label: 标签
+          type: string
+          list: true
+
+        - name: category
+          label: 分类
+          type: string
+
+        - name: draft
+          label: 草稿
+          type: boolean
+          default: false
+
+        - name: pinned
+          label: 置顶
+          type: boolean
+          default: false
+
+        - name: slug
+          label: Slug
+          type: string
+
+        - name: lang
+          label: 语言
+          type: select
+          options:
+            values:
+              - { label: 中文, value: "" }
+              - { label: English, value: en }
+              - { label: 日本語, value: ja }
+              - { label: 繁體中文, value: zh_TW }
+              - { label: Русский, value: ru }
+
+        - name: author
+          label: 作者
+          type: string
+          default: "EnkanSakura"
+
+        - name: comment
+          label: 启用评论
+          type: boolean
+          default: true
+
+        - name: licenseName
+          label: License名称
+          type: string
+
+        - name: licenseUrl
+          label: License链接
+          type: string
+
+        - name: password
+          label: 文章密码
+          type: string
+
+        - name: passwordHint
+          label: 密码提示
+          type: string
+
+        - name: body
+          label: 正文
+          type: rich-text
+      filename: "page.md"
+    
+    - name: about
+      label: 📄 关于页面
+      type: file
+      path: src/content/spec/about.md
+      format: yaml-frontmatter
+      fields:
+        - name: title
+          label: 标题
+          type: string
+          default: "关于"
+
+        - name: body
+          label: 正文
+          type: rich-text
+
+    - name: friends
+      label: 🔗 友情链接
+      type: file
+      path: src/content/spec/friends.mdx
+      format: yaml-frontmatter
+      fields:
+        - name: title
+          label: 标题
+          type: string
+
+        - name: body
+          label: 正文
+          type: rich-text
+
+    - name: guestbook
+      label: 📬 留言板
+      type: file
+      path: src/content/spec/guestbook.md
+      format: yaml-frontmatter
+      fields:
+        - name: title
+          label: 标题
+          type: string
+          default: 留言板
+
+        - name: body
+          label: 正文
+          type: rich-text
+
+  # ============================================================
+  # ⚙️ 站点设置
+  # ============================================================
+  - name: site-settings
+    label: ⚙️ 站点设置
+    type: group
+    description: 核心站点配置，包括标题、域名、SEO、个人信息等
+    items:
+      - name: site-config
+        label: 🌐 站点主配置
+        type: file
+        path: src/config/siteConfig.ts
+        format: code
+        description: 站点标题、URL、主题色、分页、Bangumi 等核心设置
+
+      - name: profile-config
+        label: 👤 个人信息
+        type: file
+        path: src/config/profileConfig.ts
+        format: code
+        description: 头像、昵称、签名、社交链接等个人资料配置
+
+      - name: announcement-config
+        label: 📢 公告栏
+        type: file
+        path: src/config/announcementConfig.ts
+        format: code
+        description: 博客顶部公告栏的标题、内容和链接配置
+
+      - name: license-config
+        label: 📜 许可协议
+        type: file
+        path: src/config/licenseConfig.ts
+        format: code
+        description: 文章底部版权声明（如 CC BY-NC-SA 4.0）
+
+  # ============================================================
+  # 🎨 布局与外观
+  # ============================================================
+  - name: layout-appearance
+    label: 🎨 布局与外观
+    type: group
+    description: 导航栏、侧边栏、壁纸、字体等视觉相关配置
+    items:
+      - name: nav-bar-config
+        label: 🧭 导航栏
+        type: file
+        path: src/config/navBarConfig.ts
+        format: code
+        description: 导航栏菜单项、链接预设和搜索配置
+
+      - name: sidebar-config
+        label: 📐 侧边栏布局
+        type: file
+        path: src/config/sidebarConfig.ts
+        format: code
+        description: 侧边栏位置、组件（个人资料、公告、音乐、分类、标签等）的显示和排序
+
+      - name: footer-config
+        label: 📏 页脚设置
+        type: file
+        path: src/config/footerConfig.ts
+        format: code
+        description: 页脚开关控制
+
+      - name: footer-html
+        label: 📏 页脚 HTML
+        type: file
+        path: src/config/FooterConfig.html
+        format: code
+        description: 页脚自定义 HTML 内容（备案号、版权信息等）
+
+      - name: font-config
+        label: 🔤 字体设置
+        type: file
+        path: src/config/fontConfig.ts
+        format: code
+        description: 全局字体、横幅字体、Google Fonts、子集化等配置
+
+      - name: cover-image-config
+        label: 🖼️ 文章封面图
+        type: file
+        path: src/config/coverImageConfig.ts
+        format: code
+        description: 文章详情页封面图显示和随机图 API 配置
+
+      - name: background-wallpaper
+        label: 🏞️ 背景壁纸
+        type: file
+        path: src/config/backgroundWallpaper.ts
+        format: code
+        description: 全屏壁纸、横幅壁纸、视频背景、水波纹、渐变等背景特效
+
+      - name: expressive-code-config
+        label: 💻 代码块样式
+        type: file
+        path: src/config/expressiveCodeConfig.ts
+        format: code
+        description: 代码高亮主题、折叠插件、语言徽章等代码块配置
+
+  # ============================================================
+  # 🔧 功能配置
+  # ============================================================
+  - name: feature-settings
+    label: 🔧 功能配置
+    type: group
+    description: 评论、统计、音乐、打赏、友链、特效等功能模块配置
+    items:
+      - name: comment-config
+        label: 💬 评论系统
+        type: file
+        path: src/config/commentConfig.ts
+        format: code
+        description: Twikoo / Waline / Giscus / Artalk / Disqus 评论系统配置
+
+      - name: analytics-config
+        label: 📊 数据统计
+        type: file
+        path: src/config/analyticsConfig.ts
+        format: code
+        description: Google Analytics、Microsoft Clarity、Umami、51la 统计配置
+
+      - name: music-config
+        label: 🎵 音乐播放器
+        type: file
+        path: src/config/musicConfig.ts
+        format: code
+        description: 音乐播放模式（Meting API / 本地音乐）、播放列表、歌词设置
+
+      - name: sponsor-config
+        label: 💰 打赏页面
+        type: file
+        path: src/config/sponsorConfig.ts
+        format: code
+        description: 打赏用途、支付方式（支付宝/微信/Ko-fi/爱发电）、赞助者列表
+
+      - name: friends-data
+        label: 🔗 友链数据
+        type: file
+        path: src/config/friendsConfig.ts
+        format: code
+        description: 友链列表（站点名、头像、描述、链接、标签、权重）
+
+      - name: effects-config
+        label: 🌸 樱花特效
+        type: file
+        path: src/config/effectsConfig.ts
+        format: code
+        description: 樱花飘落动画的数量、速度、尺寸、透明度等参数
+
+      - name: gallery-config
+        label: 🖼️ 相册配置
+        type: file
+        path: src/config/galleryConfig.ts
+        format: code
+        description: 相册列表（ID、名称、描述、地点、日期、标签、密码）和布局设置
+
+      - name: pio-config
+        label: 🎭 看板娘
+        type: file
+        path: src/config/pioConfig.ts
+        format: code
+        description: Spine / Live2D 看板娘模型、位置、交互、气泡提示配置
+
+      - name: plantuml-config
+        label: 📐 PlantUML 图表
+        type: file
+        path: src/config/plantumlConfig.ts
+        format: code
+        description: PlantUML 服务器地址和明暗主题配置
+
+settings:
+  content:
+    merge: false
